@@ -9,7 +9,20 @@ namespace ConsoleApp1.Classes
     // Partial - particionar a classe
     public partial class Cliente
     {
-        public int? Codigo { get; set; }
+        private int _codigo;
+
+        public int Codigo
+        {
+            get { return _codigo; }
+            set { 
+                if (value < 0)
+                {
+                    _codigo = 0;
+                }
+                _codigo = value; }
+        }
+
+        //public int Codigo { get; set; }
         public string Nome { get; set; }
         public int? Tipo { get; set; }
         public DateTime? DataCadastro { get; set; }

@@ -12,10 +12,24 @@ namespace ConsoleApp1
         {
             Classes.Cliente cli = new Classes.Cliente();
             cli.Codigo = Convert.ToInt32("3");
-            cli.Nome = "Jaime";
+
+
+            //cli.Valor = 25;
+            //cli.Valor = cli.Valor.Juros();
+            //int metadeCliente = cli.Codigo.Metade();
+            //Console.WriteLine(cli.Valor);
+
+
+            cli.Nome = "jaiME".PrimeiraMaiuscula();
             cli.Tipo = 1;
             cli.DataCadastro = new DateTime(2022, 05, 31);
             // Convert.ToDateTime("..."); - Converte variavel para data
+            cli.Dispose();
+
+            using (Classes.Cliente cli2 = new Classes.Cliente(5))
+            {
+                cli2.Nome = "Pote";
+            }
 
 
             Classes.Contato contato1 = new Classes.Contato();
@@ -31,7 +45,7 @@ namespace ConsoleApp1
             Classes.Contato contato3 = new Classes.Contato();
             contato3.Codigo = 3;
             contato3.DadosContato = "33333333";
-            contato3.Tipo = "O que o jaime faz conosco";
+            contato3.Tipo = "Outra forma de contato";
 
 
             cli.Contatos = new List<Classes.Contato>();
@@ -48,7 +62,7 @@ namespace ConsoleApp1
 
             //cli.Contatos.ForEach(cont => Console.WriteLine(cont.DadosContato));
 
-            cli.Contatos.ForEach(cont => cont.Gravar());
+            //cli.Contatos.ForEach(cont => cont.Gravar());
 
             Classes.Contato contatoBuscado = cli.Contatos.FirstOrDefault(x => x.Tipo == "Telefone");
             //Console.WriteLine(contatoBuscado.DadosContato);
