@@ -6,33 +6,57 @@ using System.Threading.Tasks;
 
 namespace ConsoleApp1.Classes
 {
-    // Partial - particionar a classe
+    
     public partial class Cliente
     {
         private int _codigo;
-
         public int Codigo
         {
             get { return _codigo; }
             set { 
                 if (value < 0)
                 {
+                    throw new ConsoleApp1.Excecoes.ValidacaoException("O Codigo do Cliente nao pode ser negativo");
                     _codigo = 0;
                 }
                 _codigo = value; }
         }
 
-        //public int Codigo { get; set; }
-        public string Nome { get; set; }
-        public int? Tipo { get; set; }
-        public DateTime? DataCadastro { get; set; }
+        private string _nome;
+        public string Nome
+        {
+            get { return _nome; }
+            set { _nome = value; }
+        }
 
-        // ? serve para poder usar variaves null, string não precisa dessa definição
-        // prop - predefinição de propriedade
+        private int? _tipo;
+        public int? Tipo
+        {
+            get { return _tipo; }
+            set { _tipo = value; }
+        }
+
+        private DateTime? _datacadastro;
+        public DateTime? DataCadastro
+        {
+            get { return _datacadastro; }
+            set { _datacadastro = value; }
+        }
+
+        
 
         public List<Contato> Contatos { get; set; }
 
         //Lista - usado para multiplicidade de classe
+        // ? serve para poder usar variaves null, string não precisa dessa definição
+        // prop - predefinição de propriedade
+
+        //public int Codigo { get; set; }
+        //public string Nome { get; set; }
+        //public int? Tipo { get; set; }
+        //public DateTime? DataCadastro { get; set; }
+
+        // Partial - particionar a classe
 
     }
 }
