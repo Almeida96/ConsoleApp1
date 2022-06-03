@@ -43,9 +43,6 @@ namespace ConsoleApp1.Classes
         {
 
         }
-
-
-
         public Cliente()
         {
 

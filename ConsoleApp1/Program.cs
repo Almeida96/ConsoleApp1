@@ -10,21 +10,20 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            Classes.Cliente cli = new Classes.Cliente();
-            cli.Codigo = Convert.ToInt32("3");
-
-
-            //cli.Valor = 25;
-            //cli.Valor = cli.Valor.Juros();
-            //int metadeCliente = cli.Codigo.Metade();
-            //Console.WriteLine(cli.Valor);
-
-
-            cli.Nome = "jaiME".PrimeiraMaiuscula();
-            cli.Tipo = 1;
-            cli.DataCadastro = new DateTime(2022, 05, 31);
-            // Convert.ToDateTime("..."); - Converte variavel para data
-            cli.Dispose();
+            try
+            {
+                Classes.Cliente cli = new Classes.Cliente();
+                cli.Codigo = 1;
+                cli.Nome = "Gui".PrimeiraMaiuscula();
+                cli.Tipo = 1;
+                cli.DataCadastro = new DateTime(2022, 05, 31);
+                cli.Dispose();
+            }
+            catch (ConsoleApp1.Excecoes.ValidacaoException ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
 
             using (Classes.Cliente cli2 = new Classes.Cliente(5))
             {
@@ -48,10 +47,10 @@ namespace ConsoleApp1
             contato3.Tipo = "Outra forma de contato";
 
 
-            cli.Contatos = new List<Classes.Contato>();
-            cli.Contatos.Add(contato1);
-            cli.Contatos.Add(contato2);
-            cli.Contatos.Add(contato3);
+            //cli.Contatos = new List<Classes.Contato>();
+            //cli.Contatos.Add(contato1);
+            //cli.Contatos.Add(contato2);
+            //cli.Contatos.Add(contato3);
 
             //cli.Gravar();
 
@@ -63,9 +62,15 @@ namespace ConsoleApp1
             //cli.Contatos.ForEach(cont => Console.WriteLine(cont.DadosContato));
 
             //cli.Contatos.ForEach(cont => cont.Gravar());
+            // -------------------------------------------------
+            // Convert.ToDateTime("..."); - Converte variavel para data
+            //cli.Valor = 25;
+            //cli.Valor = cli.Valor.Juros();
+            //int metadeCliente = cli.Codigo.Metade();
+            //Console.WriteLine(cli.Valor);
+            // -------------------------------------------------
 
-            Classes.Contato contatoBuscado = cli.Contatos.FirstOrDefault(x => x.Tipo == "Telefone");
-            //Console.WriteLine(contatoBuscado.DadosContato);
+            //Classes.Contato contatoBuscado = cli.Contatos.FirstOrDefault(x => x.Tipo == "Telefone");
             Console.ReadLine();
         }
     }

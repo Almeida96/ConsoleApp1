@@ -26,7 +26,12 @@ namespace ConsoleApp1.Classes
         public string Nome
         {
             get { return _nome; }
-            set { _nome = value; }
+            set { 
+                if (value.Length <= 3)
+                {
+                    throw new ConsoleApp1.Excecoes.ValidacaoException("O nome do cliente precisa ter no minimo 4 caracteres");
+                }
+                _nome = value; }
         }
 
         private int? _tipo;
