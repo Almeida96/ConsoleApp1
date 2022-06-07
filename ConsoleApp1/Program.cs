@@ -10,25 +10,42 @@ namespace ConsoleApp1
     {
         static void Main(string[] args)
         {
-            try
+
+            using (Classes.Cliente cli2 = new Classes.Cliente(2))
             {
-                Classes.Cliente cli = new Classes.Cliente();
-                cli.Codigo = 1;
-                cli.Nome = "Gui".PrimeiraMaiuscula();
-                cli.Tipo = 1;
-                cli.DataCadastro = new DateTime(2022, 05, 31);
+                
+            }
+            using (Classes.Cliente cli = new Classes.Cliente())
+            {
+                //Classes.Cliente cli = new Classes.Cliente();
+
+                Console.WriteLine("Digite o Codigo do Cliente: ");
+                string? codd = Console.ReadLine();
+                cli.Codigo = (int)Convert.ToInt64(codd);
+
+                Console.WriteLine("Digite o nome do Cliente: ");
+                string? name = Console.ReadLine();
+                cli.Nome = name.PrimeiraMaiuscula();
+
+                Console.WriteLine("Digite o Tipo do Cliente: ");
+                string? tip = Console.ReadLine();
+                cli.Tipo = (int)Convert.ToInt64(tip);
+
+                DateTime date = DateTime.UtcNow;
+                cli.DataCadastro = date;
+
                 cli.Dispose();
             }
-            catch (ConsoleApp1.Excecoes.ValidacaoException ex)
-            {
-                Console.WriteLine(ex.Message);
-                throw;
-            }
+            //}
+            //catch (ConsoleApp1.Excecoes.ValidacaoException ex)
+            //{
+            //    Console.WriteLine(ex.Message);
+            //}
 
-            using (Classes.Cliente cli2 = new Classes.Cliente(5))
-            {
-                cli2.Nome = "Pote";
-            }
+            //using (Classes.Cliente cli2 = new Classes.Cliente(5))
+            //{
+            //    cli2.Nome = "Pote";
+            //}
 
 
             Classes.Contato contato1 = new Classes.Contato();
@@ -73,5 +90,7 @@ namespace ConsoleApp1
             //Classes.Contato contatoBuscado = cli.Contatos.FirstOrDefault(x => x.Tipo == "Telefone");
             Console.ReadLine();
         }
+
+
     }
 }
