@@ -26,9 +26,8 @@ namespace ConsoleApp1
                 Console.WriteLine("2. Buscar Cliente");
                 Console.WriteLine("3. Remover Cliente");
                 Console.WriteLine("0. Sair");
-                int opcao2 = Convert.ToInt32(Console.ReadLine());
-                opcao = opcao2;
-                switch (opcao2)
+                int MainOption = Convert.ToInt32(Console.ReadLine());
+                switch (MainOption)
                 {
                     // Case 1 = Inserção
                     case 1:
@@ -57,41 +56,54 @@ namespace ConsoleApp1
 
                     //Case 2 = Remoção
                     case 2:
+                        Console.WriteLine("Digite o Codigo do Cliente para Consulta:");
+                        int case2 = Convert.ToInt32(Console.ReadLine());
 
 
+                        break;
+
+                    default:
+                        Console.WriteLine("FIM");
+                        opcao = MainOption;
+                        break;
                 }
             }
-
-            using (Classes.Cliente cli = new Classes.Cliente())
-            {
-                //Classes.Cliente cli = new Classes.Cliente();
-
-                Console.WriteLine("Digite o Codigo do Cliente: ");
-                string? codd = Console.ReadLine();
-                cli.Codigo = (int)Convert.ToInt64(codd);
-
-                Console.WriteLine("Digite o nome do Cliente: ");
-                string? name = Console.ReadLine();
-                cli.Nome = name.PrimeiraMaiuscula();
-
-                Console.WriteLine("Digite o Tipo do Cliente: ");
-                string? tip = Console.ReadLine();
-                cli.Tipo = (int)Convert.ToInt64(tip);
-
-                DateTime date = DateTime.UtcNow;
-                cli.DataCadastro = date;
-
-                cli.Dispose();
-            }
-            
-            
-            
-
-
-
-            Console.ReadLine();
         }
-
-
     }
 }
+
+/*
+//using (Classes.Cliente cli = new Classes.Cliente())
+//{
+//    //Classes.Cliente cli = new Classes.Cliente();
+
+//    Console.WriteLine("Digite o Codigo do Cliente: ");
+//    string? codd = Console.ReadLine();
+//    cli.Codigo = (int)Convert.ToInt64(codd);
+
+//    Console.WriteLine("Digite o nome do Cliente: ");
+//    string? name = Console.ReadLine();
+//    cli.Nome = name.PrimeiraMaiuscula();
+
+//    Console.WriteLine("Digite o Tipo do Cliente: ");
+//    string? tip = Console.ReadLine();
+//    cli.Tipo = (int)Convert.ToInt64(tip);
+
+//    DateTime date = DateTime.UtcNow;
+//    cli.DataCadastro = date;
+
+//    cli.Dispose();
+//}
+
+
+
+
+
+
+Console.ReadLine();
+}
+
+
+}
+}
+*/

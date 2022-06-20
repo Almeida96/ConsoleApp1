@@ -7,14 +7,6 @@ using System.Threading.Tasks;
 
 public static class MetodosExtensao
 {
-    public static int Metade (this int Valor)
-    {
-        return Valor / 2;
-    }
-    public static double Juros(this double Valor)
-    {
-        return Valor + 20;
-    }
     public static string PrimeiraMaiuscula(this string Valor)
     {
         return Valor.Substring(0, 1).ToUpper() + Valor.Substring(1, Valor.Length - 1).ToLower();
