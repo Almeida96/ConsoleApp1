@@ -1,109 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ConsoleApp1;
+using ConsoleApp1.Classes;
+using Microsoft.Data.Sqlite;
+using System.Globalization;
+using System.Text.Json;
 
-namespace ConsoleApp1
+try
 {
-    public static class Constants
+    var arguments = args.ToList();
+    var database = "customers.db";
+    if (arguments.Count >= 2 && arguments[0] == "--db")
     {
-        public const int LIM = 6;
+        database = arguments[1];
+        arguments.RemoveRange(0, 2);
     }
-
-    class Program
+    if (arguments.Count == 0 || arguments[0] is "--help" or "help")
     {
-        static void Main(string[] args)
-        {
-            int primeiro = -1, ultimo = -1;
-            int? i, proximo, num, opcao = -1;
-            int lm = Constants.LIM;
-            int[] fila = new int[lm];
-
-            while (opcao != 0)
-            {
-                Console.WriteLine("1. Inserir Cliente");
-                Console.WriteLine("2. Buscar Cliente");
-                Console.WriteLine("3. Remover Cliente");
-                Console.WriteLine("0. Sair");
-                int MainOption = Convert.ToInt32(Console.ReadLine());
-                switch (MainOption)
-                {
-                    // Case 1 = Inserção
-                    case 1:
-                        using (Classes.Cliente cli = new Classes.Cliente())
-                        {
-                            //Classes.Cliente cli = new Classes.Cliente();
-
-                            Console.WriteLine("Digite o Codigo do Cliente: ");
-                            string? codd = Console.ReadLine();
-                            cli.Codigo = (int)Convert.ToInt64(codd);
-
-                            Console.WriteLine("Digite o nome do Cliente: ");
-                            string? name = Console.ReadLine();
-                            cli.Nome = name.PrimeiraMaiuscula();
-
-                            Console.WriteLine("Digite o Tipo do Cliente: ");
-                            string? tip = Console.ReadLine();
-                            cli.Tipo = (int)Convert.ToInt64(tip);
-
-                            DateTime date = DateTime.UtcNow;
-                            cli.DataCadastro = date;
-
-                            cli.Dispose();
-                        }
-                        break;
-
-                    //Case 2 = Remoção
-                    case 2:
-                        Console.WriteLine("Digite o Codigo do Cliente para Consulta:");
-                        int case2 = Convert.ToInt32(Console.ReadLine());
-
-
-                        break;
-
-                    default:
-                        Console.WriteLine("FIM");
-                        opcao = MainOption;
-                        break;
-                }
-            }
-        }
+        Console.WriteLine("""
+            Customer register
+            Usage: dotnet run --project ConsoleApp1 -- [--db PATH] COMMAND
+              add ID "NAME" [TYPE]     Insert a customer
+              update ID "NAME" [TYPE]  Change name/type; retain registration date
+              get ID                  Print one customer as JSON
+              list                    Print up to 1000 customers, ordered by ID
+              delete ID               Remove a customer
+            Exit codes: 0 success, 1 invalid input/storage error, 2 customer not found.
+            """);
+        return 0;
     }
+    var operation = arguments[0];
+    var count = arguments.Count;
+    if ((operation is "add" or "update") ? count is < 3 or > 4 :
+        (operation is "get" or "delete") ? count != 2 :
+        operation != "list" || count != 1) throw new ArgumentException("Invalid command. Run --help.");
+    int Number(string value) => int.TryParse(value, NumberStyles.None, CultureInfo.InvariantCulture, out var result) && result > 0
+        ? result : throw new ArgumentException("IDs and supplied types must be positive integers.");
+    using var repository = new CustomerRepository(database);
+    switch (operation)
+    {
+        case "add":
+        case "update":
+            var id = Number(arguments[1]);
+            int? type = count == 4 ? Number(arguments[3]) : null;
+            if (operation == "add") repository.Add(new Cliente(id, arguments[2], type, DateTimeOffset.UtcNow));
+            else if (!repository.Update(id, arguments[2], type)) return 2;
+            Console.WriteLine(JsonSerializer.Serialize(repository.List(id)[0]));
+            break;
+        case "get":
+            var customers = repository.List(Number(arguments[1]));
+            if (customers.Count == 0) return 2;
+            Console.WriteLine(JsonSerializer.Serialize(customers[0]));
+            break;
+        case "list":
+            Console.WriteLine(JsonSerializer.Serialize(repository.List()));
+            break;
+        case "delete":
+            if (!repository.Delete(Number(arguments[1]))) return 2;
+            Console.WriteLine("Customer deleted.");
+            break;
+    }
+    return 0;
 }
-
-/*
-//using (Classes.Cliente cli = new Classes.Cliente())
-//{
-//    //Classes.Cliente cli = new Classes.Cliente();
-
-//    Console.WriteLine("Digite o Codigo do Cliente: ");
-//    string? codd = Console.ReadLine();
-//    cli.Codigo = (int)Convert.ToInt64(codd);
-
-//    Console.WriteLine("Digite o nome do Cliente: ");
-//    string? name = Console.ReadLine();
-//    cli.Nome = name.PrimeiraMaiuscula();
-
-//    Console.WriteLine("Digite o Tipo do Cliente: ");
-//    string? tip = Console.ReadLine();
-//    cli.Tipo = (int)Convert.ToInt64(tip);
-
-//    DateTime date = DateTime.UtcNow;
-//    cli.DataCadastro = date;
-
-//    cli.Dispose();
-//}
-
-
-
-
-
-
-Console.ReadLine();
+catch (Exception error) when (error is ArgumentException or SqliteException or IOException or UnauthorizedAccessException)
+{
+    Console.Error.WriteLine(error.Message);
+    return 1;
 }
-
-
-}
-}
-*/

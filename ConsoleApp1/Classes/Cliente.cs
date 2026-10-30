@@ -1,56 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+namespace ConsoleApp1.Classes;
 
-namespace ConsoleApp1.Classes
+public sealed record Cliente(int Codigo, string Nome, int? Tipo, DateTimeOffset DataCadastro)
 {
-    
-    public partial class Cliente
+    public void Validate()
     {
-        private int _codigo;
-        public int Codigo
-        {
-            get { return _codigo; }
-            set { 
-                if (value < 0)
-                {
-                    throw new ConsoleApp1.Excecoes.ValidacaoException("O Codigo do Cliente nao pode ser negativo");
-                    _codigo = 0;
-                }
-                _codigo = value; }
-        }
-
-        private string _nome;
-        public string Nome
-        {
-            get { return _nome; }
-            set { 
-                if (value.Length <= 3)
-                {
-                    throw new ConsoleApp1.Excecoes.ValidacaoException("O nome do cliente precisa ter no minimo 4 caracteres");
-                }
-                _nome = value; }
-        }
-
-        private int? _tipo;
-        public int? Tipo
-        {
-            get { return _tipo; }
-            set { _tipo = value; }
-        }
-
-        private DateTime? _datacadastro;
-        public DateTime? DataCadastro
-        {
-            get { return _datacadastro; }
-            set { _datacadastro = value; }
-        }
-
-        
-
-        public List<Contato> Contatos { get; set; }
-
+        if (Codigo <= 0) throw new ArgumentException("Customer ID must be positive.");
+        if (string.IsNullOrWhiteSpace(Nome) || Nome.Trim().Length is < 2 or > 200) throw new ArgumentException("Name must contain 2 to 200 characters.");
+        if (Tipo is < 0) throw new ArgumentException("Customer type cannot be negative.");
     }
 }
